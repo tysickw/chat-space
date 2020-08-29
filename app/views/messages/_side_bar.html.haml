@@ -1,8 +1,8 @@
 .SideBar
   .SideHeader
     .SideHeader__topItems
-      .SideHeader__userName
-        =current_user.name
+      %h3.SideHeader__userName
+        = current_user.name
       %ul.SideHeader__icons
         %li.SideHeader__icon
           = link_to new_group_path do
@@ -14,8 +14,8 @@
   .GroupList
     - current_user.groups.each do |group|
       .Group
-        = link_to '#' do
+        = link_to group_messages_path(group.id) do
           .Group__name
             = group.name
           .Group__message
-            メッセージはまだありません
+            = group.show_last_message

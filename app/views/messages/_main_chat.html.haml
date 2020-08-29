@@ -2,41 +2,22 @@
   .ChatHeader
     .ChatHeader__group
       .ChatHeader__groupName
-        test
+        = @group.name
       %ul.ChatHeader__memberList
         Member:
-        %li.ChatHeader__member
-          なまえ
-          name
-          名前
-    = link_to '#', class: "ChatHeader__editButton" do
+        - @group.users.each do |user|
+          %li.ChatHeader__member
+            = user.name
+    = link_to edit_group_path(@group.id), class: "ChatHeader__editButton" do
       Edit
   .MessageList
-    .MessageBox
-      .MessageInfo
-        .MessageInfo__userName
-          name
-        .MessageInfo__date 
-          2020/08/14(Fri) 00:00
-      .Message
-        .Message__content
-          おはよう！
-
-    .MessageBox    
-      .MessageInfo
-        .MessageInfo__userName
-          name
-        .MessageInfo__date 
-          2020/08/14(Fri) 01:00
-      .Message
-        .Message__content
-          こんにちは！
-  
+    = render @messages
+    
   .ChatFooter
-    %form.Form
+    = form_with model: [@group, @message], html: {class: "Form"}, local: true do |f|
       .Form__contents
-        %input.Form__inputContent{type: 'text', placeholder: 'type a message'}
-        %label.Form__inputImage
+        = f.text_field :content, class: 'Form__inputContent', placeholder: 'type a message'
+        = f.label :image, class: 'Form__inputImage' do
           = icon('fas', 'image', class: 'Form__icon')
-          %input.HiddenFile{type: 'file'}
-      %input.Form__submitBtn{type: 'submit', value: 'Send'} 
+          = f.file_field :image, class: 'HiddenFile'
+      = f.submit 'Send', class: 'Form__submitBtn'
